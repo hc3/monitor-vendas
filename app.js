@@ -1,28 +1,34 @@
 'use strict';
 
 import fs from 'fs';
+import pedido from './model/pedido';
+import mongoose from 'mongoose';
 
+
+/**
+ * estudar pesquisas com o mongodb
+ */
 
 var file = require('fs');
-file.readFile('./init.csv',{encoding:'UTF-8'},(err, data)=>{
-  console.log(line(data,mapear));
+file.readFile('./PEDIDOS_335101.CSV',{encoding:'UTF-8'},(err, data)=>{
+  pedido.create(line(data,mapear), (err) => {
+    if(err) return console.log('deu merda:',err);
+    console.log('sucesso obj SALVO!');
+  })
+  console.log(line(data,mapear).length);
 });
 
 function line(data,callback){
   var lines = data.split("\n");
+  lines.shift();
+  lines.pop();
   var array = lines.map(callback);
-    // if(callback){
-    //   for(var i=0;i<lines.length;i++){
-    //     array.push(callback(lines[i]));
-    //   }
-    // }
   return array;
 }
 
 function mapear(line){
   var data = line.split(';');
   var obj = {};
-  console.log(data[6]);
   obj.pedido = data[0];
   obj.lote = data[1];
   obj.romaneio = data[2];
@@ -95,3 +101,12 @@ function mapear(line){
   obj.licensa = data[69]
   return obj;
 }
+
+
+mongoose.connect('mongodb://localhost/loja', function(err, res) {
+	if (err) {
+		console.log('error connecting to MongoDB Database. ' + err);
+	} else {
+		console.log('Connected to Database');
+	}
+});
