@@ -10,7 +10,9 @@ import mongoose from 'mongoose';
  */
 
 var file = require('fs');
-file.readFile('./PEDIDOS_335101.CSV',{encoding:'UTF-8'},(err, data)=>{
+var arquivoCSV = './PEDIDOS.CSV';
+
+file.readFile(arquivoCSV,{encoding:'UTF-8'},(err, data)=>{
   pedido.create(line(data,mapear), (err) => {
     if(err) return console.log('deu merda:',err);
     console.log('sucesso obj SALVO!');
@@ -29,77 +31,33 @@ function line(data,callback){
 function mapear(line){
   var data = line.split(';');
   var obj = {};
-  obj.pedido = data[0];
-  obj.lote = data[1];
-  obj.romaneio = data[2];
-  obj.cliente = data[3];
-  obj.canal = data[4];
-  obj.sub_canal = data[5];
+  obj.numero_pedido = data[0];
+  obj.cod_cliente = data[3];
   obj.vendedor = data[6];
-  obj.desc = data[7];
-  obj.desc_fin = data[8];
-  obj.tx_fin = data[9];
-  obj.tipo_cobranca = data[10];
-  obj.tipo_pagamento = data[11];
-  obj.dias = data[12];
-  obj.vc1 = data[13]
-  obj.vc2 = data[14]
-  obj.vc3 = data[15]
-  obj.vc4 = data[16]
-  obj.vc5 = data[17]
-  obj.dt_1_ven = data[18]
-  obj.banco = data[19]
-  obj.trans = data[20]
-  obj.placa = data[21]
-  obj.motorista = data[22]
-  obj.ajud1 = data[23]
-  obj.ajud2 = data[24]
-  obj.can = data[25]
-  obj.data_acerto = data[26]
-  obj.flag_rom = data[27]
-  obj.motivo_dev = data[28]
-  obj.motivo_bloq = data[29]
-  obj.dt_pedido = data[30]
-  obj.pasta = data[31]
-  obj.item = data[32]
-  obj.familia = data[33]
-  obj.prd = data[34]
-  obj.cod_reduzido = data[35]
-  obj.tabela = data[36]
-  obj.desconto = data[37]
-  obj.valor_total = data[32]
-  obj.valor_retorno = data[39]
-  obj.valor_unitario = data[40]
-  obj.icmr = data[41]
-  obj.desc_acessoria = data[42]
-  obj.desc_verba = data[43]
-  obj.tx_financeira = data[44]
-  obj.qnt_caixa = data[45]
-  obj.qnt_unit = data[46]
-  obj.retorno_caixa = data[47]
-  obj.retorno_unit = data[48]
-  obj.desc_max = data[49]
-  obj.serie = data[50]
-  obj.nf = data[51]
-  obj.nat_op = data[52]
-  obj.ocorrencia = data[53]
-  obj.oc_sigla = data[54]
-  obj.fl = data[55]
-  obj.fln = data[56]
-  obj.flb = data[57]
-  obj.fl_nfe = data[58]
-  obj.no_cev = data[59]
-  obj.preco_liq = data[60]
-  obj.preco_tab = data[61]
-  obj.mot_troca = data[62]
-  obj.qnt_und = data[63]
-  obj.caixa_liq = data[64]
-  obj.un_liq = data[65]
-  obj.un2_liq = data[66]
-  obj.cat_prod = data[67]
-  obj.desc_cat = data[68]
-  obj.licensa = data[69]
-  return obj;
+  obj.placa = data[20];
+  obj.cod_motorista = data[21];
+  obj.cancelado = data[24];
+  obj.mot_dev = data[27];
+  obj.data_pedido = data[29];
+  obj.pasta = data[30];
+  obj.sequencia_pedido = data[31].split("|").join("");
+  obj.familia = data[32];
+  obj.cod_produto = data[34];
+  obj.tabela_preco = data[35];
+  obj.valor_total = data[37];
+  obj.valor_retorno = data[38]
+  obj.valor_unit = data[40];
+  obj.qnt_cx = data[45];
+  obj.qnt_und = data[46];
+  obj.ret_qnt_cx = data[47];
+  obj.ret_qnt_und = data[48];
+  obj.nota_fiscal = data[51];
+  obj.ocorrencia = data[53];
+  obj.fator_convert = data[62];
+  obj.qnt_cx_final = data[45] - data[47];
+  obj.qnt_und_final = data[46] - data[48];
+  obj.valor_final = parseFloat(data[37].replace(',','.')) - parseFloat(data[38].replace(',','.'));
+   return obj;
 }
 
 
@@ -108,5 +66,11 @@ mongoose.connect('mongodb://localhost/loja', function(err, res) {
 		console.log('error connecting to MongoDB Database. ' + err);
 	} else {
 		console.log('Connected to Database');
+    if(mongoose.connection.collections['pedidos']) {
+      mongoose.connection.collections['pedidos'].drop( function(err) {
+        console.log('collection dropped');
+      });
+    };
+    //mongoose.connection.db.dropDatabase();
 	}
 });
