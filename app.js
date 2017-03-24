@@ -6,15 +6,19 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import mongoose from 'mongoose';
-import importPedidos from './service/import-pedido.js';
+import importPedidos from './service/import-pedido';
+import pedidosService from './service/PedidoService';
 /**
  * estudar pesquisas com o mongodb
  */
 var app = express();
 var port = process.env.PORT || 8080;
 
+mongoose.Promise = global.Promise;
+
  // ROUTERS
 importPedidos(app);
+pedidosService(app);
 
 
 // configuration ============================================================================================
