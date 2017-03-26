@@ -6,7 +6,7 @@
     "configurations": [
 
 {
-  "name": "Launch",
+  "name": "Run DEBUG",
   "type": "node2",
   "request": "launch",
   "program": "${workspaceRoot}/app.js",
@@ -14,7 +14,7 @@
   "args": [],
   "cwd": "${workspaceRoot}",
   "preLaunchTask": null,
-  "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node.cmd",
+  "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
   "runtimeArgs": [
     "--nolazy"
   ],

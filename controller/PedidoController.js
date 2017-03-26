@@ -15,26 +15,44 @@ class PedidoController {
     };
 
     getValorFaturamento() {
-        
-        
-        return this.Model.aggregate([
-            {
-                $match: {
-                    $and: [
-                        { '$cancelado': '008' },
-                        { '$ocorrencia': '001 ' },
-                    ]
+
+        return this.Model.aggregate([{
+                    $match: {
+                        "cancelado": "008",
+                        "ocorrencia": "001 "
+                    }
+                },
+                {
+                    $group: {
+                        _id: {},
+                        valor: {
+                            $sum: "$valor_final"
+                        }
+                    }
                 }
-            },
-            {
-                $group: {
-                    _id: {},
-                    valor: { $sum: '$valor_final' }
+            ])
+            .exec((err, objeto) => callback.find(err, objeto));
+
+    }
+
+    getValorFaturamentoPorVendedor(vendedor) {
+        return this.Model.aggregate([{
+                    $match: {
+                        "cancelado": "008",
+                        "ocorrencia": "001 ",
+                        "vendedor":vendedor
+                    }
+                },
+                {
+                    $group: {
+                        _id: {},
+                        valor: {
+                            $sum: "$valor_final"
+                        }
+                    }
                 }
-            }
-        ])
-        .exec((err,objeto) => console.log(objeto));
-        
+            ])
+            .exec((err, objeto) => callback.find(err, objeto));
     }
 }
 

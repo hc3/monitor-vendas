@@ -8,7 +8,7 @@ const obj = {
             return res.send(response);
         } else {
             res.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-            return res.send({ error: "ERRO AO BUSCAR" });
+            return res.send(err);
         }
     },
 
@@ -23,7 +23,7 @@ const obj = {
         }
         else {
             res.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-            return res.send({ error: "ERRO NO SERVIDOR" });
+            return res.send(err);
         }
     },
 
@@ -34,14 +34,14 @@ const obj = {
         }
         else {
             res.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-            return res.send({ error: "ERRO AO REMOVER REGISTRO" });
+            return res.send(err);
         }
     },
 
     save: (err, res) => {
         if (err) {
             res.statusCode = httpStatus.BAD_REQUEST;
-            res.send({ error: err });
+            res.send(err);
         }
         else {
             res.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
