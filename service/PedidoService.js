@@ -22,6 +22,20 @@ export default app => {
                 .catch(err => callback.find(err, res, null));
         });
 
+    app.route('/getCoberturaDevassa')
+        .get((req, res) => {
+            pedidoController.getCoberturaDevassa()
+                .then(response => callback.find(null, res, response))
+                .catch(err => callback.find(err, res, null));
+        });
+
+    app.route('/getVolumePorProduto')
+        .get((req, res) => {
+            pedidoController.getVolumePorProduto()
+                .then(response => callback.find(null, res, response))
+                .catch(err => callback.find(err, res, null));
+        });
+    
     app.route('/getValFatVd/:vendedor')
         .get((req, res) => {
             pedidoController.getValorFaturamentoPorVendedor(req.params.vendedor)

@@ -69,10 +69,10 @@ var pedido = {
         type:String
     },
     qnt_cx_final: {
-        type:String
+        type:Number
     },
     qnt_und_final: {
-        type:String
+        type:Number
     },
     mot_dev: {
         type:String
