@@ -40,7 +40,7 @@ class PedidoController {
                     _id: {
                         num_ped: "$_id.num_ped",
                         data_pedido: "$_id.data_pedido",
-                        cliente: "$_id.cod_cliente",
+                        cliente: "$_id.cliente",
                         vendedor: "$_id.vendedor"
                     },
                     itens: {
@@ -59,7 +59,7 @@ class PedidoController {
                     cliente: "$_id.cliente",
                     vendedor: "$_id.vendedor",
                     numPedido: "$_id.num_ped",
-                    qntItens: "$totalItens",
+                    qntItens:{ $size: "$itens" },
                     itens: "$itens"
                 }
             },
